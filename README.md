@@ -1,0 +1,2 @@
+# RickyOS
+My personalized OS
