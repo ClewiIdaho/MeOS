@@ -10,7 +10,7 @@ A personal life-OS Progressive Web App. Money, tasks, workouts, goals, leveling,
 
 Once deployed, MY.OS will live at:
 
-**https://clewiidaho.github.io/rickyos/**
+**https://clewiidaho.github.io/RickyOS/**
 
 The GitHub Actions workflow (`.github/workflows/deploy.yml`) auto-builds and publishes on every push to `main`.
 
@@ -18,7 +18,7 @@ The GitHub Actions workflow (`.github/workflows/deploy.yml`) auto-builds and pub
 
 ## Install on Android (PWA)
 
-1. Open **https://clewiidaho.github.io/rickyos/** in **Chrome** on your Android phone.
+1. Open **https://clewiidaho.github.io/RickyOS/** in **Chrome** on your Android phone.
 2. Wait a moment for the page to load (the service worker registers automatically).
 3. Open the Chrome menu (⋮) → **Add to Home screen** (or **Install app**).
 4. Confirm. MY.OS appears as a standalone app icon on your home screen.
