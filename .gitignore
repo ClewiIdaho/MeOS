@@ -1,0 +1,26 @@
+node_modules
+dist
+dist-ssr
+.DS_Store
+*.local
+.env*
+!.env.example
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build artifacts
+.vite
+*.log
+npm-debug.log*
+*.tsbuildinfo
+
+# PWA generated
+dev-dist
