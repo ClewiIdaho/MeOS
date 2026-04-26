@@ -3,12 +3,12 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import path from 'node:path';
 
-// MY.OS — production base path is /rickyos/ for GitHub Pages.
+// MY.OS — production base path is /RickyOS/ for GitHub Pages.
 // In dev we use '/' so the dev server serves from root.
 const isProd = process.env.NODE_ENV === 'production';
 
 export default defineConfig({
-  base: isProd ? '/rickyos/' : '/',
+  base: isProd ? '/RickyOS/' : '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -54,8 +54,8 @@ export default defineConfig({
         background_color: '#0A0918',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: isProd ? '/rickyos/' : '/',
-        scope: isProd ? '/rickyos/' : '/',
+        start_url: isProd ? '/RickyOS/' : '/',
+        scope: isProd ? '/RickyOS/' : '/',
         categories: ['lifestyle', 'productivity', 'health'],
         icons: [
           {
@@ -83,7 +83,7 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
-        navigateFallback: isProd ? '/rickyos/index.html' : '/index.html',
+        navigateFallback: isProd ? '/RickyOS/index.html' : '/index.html',
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'font',
