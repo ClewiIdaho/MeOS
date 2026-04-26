@@ -3,6 +3,7 @@ import { type ReactNode } from 'react';
 import { type LucideIcon } from 'lucide-react';
 import { ScreenHeader } from './ScreenHeader';
 import { Card } from './Card';
+import { DbStatsCard } from './DbStatsCard';
 
 interface PlaceholderScreenProps {
   eyebrow: string;
@@ -113,6 +114,8 @@ export function PlaceholderScreen({
             </Card>
           </motion.div>
         ) : null}
+
+        <DbStatsCard />
       </motion.div>
     </>
   );
