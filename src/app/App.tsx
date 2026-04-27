@@ -12,6 +12,7 @@ import { useDbReady } from '@/hooks/useDbReady';
 import { useActionOrchestrator } from '@/hooks/useActionOrchestrator';
 import { useGoalsEngine } from '@/hooks/useGoalsEngine';
 import { useCelebrationFx } from '@/hooks/useCelebrationFx';
+import { useNotificationScheduler } from '@/hooks/useNotificationScheduler';
 import { useUserSettings } from '@/hooks/useUserSettings';
 
 export function App() {
@@ -20,6 +21,7 @@ export function App() {
   useActionOrchestrator();
   useGoalsEngine();
   useCelebrationFx();
+  useNotificationScheduler();
 
   const showOnboarding = ready && settings && !settings.onboardingCompleted;
 
