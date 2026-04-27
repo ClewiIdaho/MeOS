@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input, Textarea } from '@/ui/components/Input';
 import { createNotebookEntry, deleteNotebookEntry, updateNotebookEntry } from './queries';
@@ -76,7 +76,7 @@ export function NotebookSheet({
   };
 
   return (
-    <Sheet
+    <Modal
       open={open}
       onClose={onClose}
       title={isEdit ? 'Edit note' : voiceCategory ? 'Save to notebook' : 'New note'}
@@ -139,6 +139,6 @@ export function NotebookSheet({
           </Button>
         </div>
       </div>
-    </Sheet>
+    </Modal>
   );
 }

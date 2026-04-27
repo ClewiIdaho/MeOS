@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Trash2, Plus, Sparkles, Trophy } from 'lucide-react';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input } from '@/ui/components/Input';
 import {
@@ -130,12 +130,11 @@ export function LiftSheet({ open, onClose, sessionId: initialId }: LiftSheetProp
 
   return (
     <>
-      <Sheet
+      <Modal
         open={open}
         onClose={handleClose}
         title="Lift"
         description="Add sets one at a time. PRs flag automatically."
-        fullHeight
       >
         <div className="flex flex-col gap-4">
           {/* Sets list */}
@@ -304,7 +303,7 @@ export function LiftSheet({ open, onClose, sessionId: initialId }: LiftSheetProp
             </Button>
           </div>
         </div>
-      </Sheet>
+      </Modal>
 
       <ExerciseSheet open={exerciseSheetOpen} onClose={() => setExerciseSheetOpen(false)} />
     </>

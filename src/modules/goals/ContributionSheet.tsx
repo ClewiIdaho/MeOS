@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input } from '@/ui/components/Input';
 import { contributeToGoal } from '@/engine/goalsEngine';
@@ -56,7 +56,7 @@ export function ContributionSheet({ open, onClose, goal }: ContributionSheetProp
   };
 
   return (
-    <Sheet
+    <Modal
       open={open}
       onClose={onClose}
       title="Contribute"
@@ -97,6 +97,6 @@ export function ContributionSheet({ open, onClose, goal }: ContributionSheetProp
           </Button>
         </div>
       </div>
-    </Sheet>
+    </Modal>
   );
 }
