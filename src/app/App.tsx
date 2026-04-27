@@ -8,6 +8,7 @@ import { ResponsibilitiesScreen } from '@/modules/responsibilities/Responsibilit
 import { WorkoutsScreen } from '@/modules/workouts/WorkoutsScreen';
 import { GoalsScreen } from '@/modules/goals/GoalsScreen';
 import { CoachScreen } from '@/modules/coach/CoachScreen';
+import { SettingsScreen } from '@/modules/settings/SettingsScreen';
 import { useDbReady } from '@/hooks/useDbReady';
 import { useActionOrchestrator } from '@/hooks/useActionOrchestrator';
 import { useGoalsEngine } from '@/hooks/useGoalsEngine';
@@ -40,6 +41,7 @@ export function App() {
             <Route path="/workouts" element={<WorkoutsScreen />} />
             <Route path="/goals" element={<GoalsScreen />} />
             <Route path="/coach" element={<CoachScreen />} />
+            <Route path="/settings" element={<SettingsScreen />} />
             <Route path="*" element={<Navigate to="/tasks" replace />} />
           </Routes>
         </Shell>
