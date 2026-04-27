@@ -96,12 +96,12 @@ No backend. No telemetry. No cloud sync. All data lives in your browser's Indexe
 ## Phase progress
 
 - [x] **Phase 1** — Scaffold, design tokens, PWA install path, layout shell, routing, GitHub Pages CI/CD
-- [ ] Phase 2 — Dexie schema + seed data
-- [ ] Phase 3 — Event bus + XP engine
+- [x] **Phase 2** — Dexie schema + seed data
+- [x] **Phase 3** — Event bus + XP engine + streak engine + action orchestrator
 - [ ] Phase 4 — Voice engine + 500+ quips
-- [ ] Phase 5 — Onboarding flow
-- [ ] Phase 6 — Money module
-- [ ] Phase 7 — Responsibilities module
+- [x] **Phase 5** — Onboarding flow (welcome → name → tone → daily XP target → ready)
+- [x] **Phase 6** — Money module (bills with monthly status, income, cash adjustments, summary)
+- [x] **Phase 7** — Responsibilities module (daily/weekly/one-off, categories, streak card)
 - [ ] Phase 8 — Workouts module
 - [ ] Phase 9 — Goals module (cross-module integration)
 - [ ] Phase 10 — Level system polish (level-up sequence)
