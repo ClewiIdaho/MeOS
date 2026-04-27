@@ -35,6 +35,7 @@ import {
   requestNotificationPermission,
   notificationsAvailable,
 } from '@/notifications/scheduler';
+import { speechSupported } from '@/voice/speech';
 import { VoiceStudioSheet } from './VoiceStudioSheet';
 import { useCustomQuips, updateCustomQuip } from './voiceQuipQueries';
 import type {
@@ -265,8 +266,23 @@ export function SettingsScreen() {
                 { value: 'spicy', label: 'Spicy' },
               ]}
               onChange={(v) => void patch({ voiceIntensity: v })}
-              hint="Affects which lines the Voice picks. You can override per-quip in the Studio."
+              hint="Affects which lines the Voice picks and the speaking rate when read aloud."
             />
+            <div className="flex items-center justify-between rounded-card border border-border-subtle px-4 py-2.5">
+              <div className="flex flex-col">
+                <span className="text-sm text-text-primary">Speak quips aloud</span>
+                <span className="text-[11px] text-text-muted">
+                  {speechSupported()
+                    ? 'Auto-plays new lines on the Coach. Tap "Hear it" to replay.'
+                    : 'This browser does not support text-to-speech.'}
+                </span>
+              </div>
+              <Toggle
+                checked={settings.soundEnabled}
+                onChange={(v) => void patch({ soundEnabled: v })}
+                disabled={!speechSupported()}
+              />
+            </div>
           </Card>
         </motion.div>
 
