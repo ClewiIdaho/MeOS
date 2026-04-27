@@ -5,6 +5,7 @@ import {
   ArrowLeft,
   Bell,
   Download,
+  Info,
   Plus,
   RotateCcw,
   Sparkles,
@@ -23,6 +24,12 @@ import {
   importBackup,
   resetApp,
   BackupVersionError,
+  exportModule,
+  downloadModuleBackup,
+  importModule,
+  ModuleMismatchError,
+  MODULE_GROUPS,
+  type ModuleId,
 } from './backup';
 import {
   requestNotificationPermission,
@@ -50,9 +57,12 @@ export function SettingsScreen() {
   const settings = useUserSettings();
   const customQuips = useCustomQuips();
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const moduleFileRef = useRef<HTMLInputElement | null>(null);
+  const pendingModuleRef = useRef<ModuleId | null>(null);
   const [busy, setBusy] = useState(false);
   const [studioOpen, setStudioOpen] = useState(false);
   const [editingQuip, setEditingQuip] = useState<CustomQuip | undefined>(undefined);
+  const [openInfo, setOpenInfo] = useState(false);
 
   if (!settings) return null;
 
@@ -112,6 +122,55 @@ export function SettingsScreen() {
     } finally {
       setBusy(false);
       if (fileRef.current) fileRef.current.value = '';
+    }
+  };
+
+  const handleModuleExport = async (moduleId: ModuleId) => {
+    setBusy(true);
+    try {
+      downloadModuleBackup(await exportModule(moduleId));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleModuleImportClick = (moduleId: ModuleId) => {
+    pendingModuleRef.current = moduleId;
+    moduleFileRef.current?.click();
+  };
+
+  const handleModuleImportFile = async (file: File) => {
+    const expected = pendingModuleRef.current;
+    if (!expected) return;
+    const group = MODULE_GROUPS[expected];
+    if (
+      !confirm(
+        `This replaces all of your ${group.label} data with the contents of this file. ` +
+          'Other modules and your settings stay as-is. Continue?',
+      )
+    ) {
+      pendingModuleRef.current = null;
+      if (moduleFileRef.current) moduleFileRef.current.value = '';
+      return;
+    }
+    setBusy(true);
+    try {
+      const json = await file.text();
+      await importModule(json, expected);
+      alert(`${group.label} restored. The app will reload.`);
+      window.location.reload();
+    } catch (err) {
+      if (err instanceof ModuleMismatchError) {
+        alert(err.message);
+      } else if (err instanceof BackupVersionError) {
+        alert(err.message);
+      } else {
+        alert('That file does not look like a MY.OS module backup.');
+      }
+    } finally {
+      setBusy(false);
+      pendingModuleRef.current = null;
+      if (moduleFileRef.current) moduleFileRef.current.value = '';
     }
   };
 
@@ -378,7 +437,59 @@ export function SettingsScreen() {
 
         <motion.div variants={fadeUp}>
           <Card className="flex flex-col gap-3 p-5">
-            <SectionLabel label="Backup" />
+            <div className="flex items-center justify-between">
+              <SectionLabel label="Move data between devices" />
+              <button
+                type="button"
+                onClick={() => setOpenInfo((v) => !v)}
+                className="grid h-7 w-7 place-items-center rounded-full bg-surface-elevated text-text-secondary"
+                aria-label="Why is this here?"
+                aria-expanded={openInfo}
+              >
+                <Info size={14} strokeWidth={2} />
+              </button>
+            </div>
+            <p className="text-[12px] leading-snug text-text-muted">
+              Download one module's data as a file, then upload it on another device
+              (e.g. the web version) to take it with you.
+            </p>
+            {openInfo ? (
+              <p className="rounded-card border border-border-subtle bg-surface/60 px-3 py-2 text-[12px] leading-snug text-text-secondary">
+                MY.OS keeps everything on your device — no account, no cloud sync. To use
+                another device, save a module to a file here, transfer the file (AirDrop,
+                email, cloud drive), then upload it on the other device. Restoring a module
+                <em> replaces </em>that module's data and leaves the rest alone.
+              </p>
+            ) : null}
+            <div className="flex flex-col gap-2">
+              {(Object.keys(MODULE_GROUPS) as ModuleId[]).map((id) => (
+                <ModuleSyncRow
+                  key={id}
+                  id={id}
+                  label={MODULE_GROUPS[id].label}
+                  blurb={MODULE_GROUPS[id].blurb}
+                  busy={busy}
+                  onDownload={() => void handleModuleExport(id)}
+                  onUpload={() => handleModuleImportClick(id)}
+                />
+              ))}
+              <input
+                ref={moduleFileRef}
+                type="file"
+                accept="application/json"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) void handleModuleImportFile(f);
+                }}
+              />
+            </div>
+          </Card>
+        </motion.div>
+
+        <motion.div variants={fadeUp}>
+          <Card className="flex flex-col gap-3 p-5">
+            <SectionLabel label="Full backup" />
             <p className="text-[12px] leading-snug text-text-muted">
               Export everything to a JSON file. Restore replaces the local database.
             </p>
@@ -495,6 +606,56 @@ function NotificationCheck({
     <div className="flex items-center justify-between rounded-card border border-border-subtle px-4 py-2.5">
       <span className="text-sm text-text-primary">{label}</span>
       <Toggle checked={checked} onChange={onChange} />
+    </div>
+  );
+}
+
+function ModuleSyncRow({
+  id,
+  label,
+  blurb,
+  busy,
+  onDownload,
+  onUpload,
+}: {
+  id: ModuleId;
+  label: string;
+  blurb: string;
+  busy: boolean;
+  onDownload: () => void;
+  onUpload: () => void;
+}) {
+  return (
+    <div className="flex flex-col gap-2 rounded-card border border-border-subtle bg-surface/40 px-3 py-3">
+      <div className="flex flex-col">
+        <span className="display-num text-[11px] uppercase tracking-[0.2em] text-text-muted">
+          {label}
+        </span>
+        <span className="mt-0.5 text-[12px] leading-snug text-text-secondary">{blurb}</span>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={onDownload}
+          disabled={busy}
+          leadingIcon={<Download size={12} strokeWidth={2.4} />}
+          aria-label={`Download ${label} data`}
+        >
+          Download
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={onUpload}
+          disabled={busy}
+          leadingIcon={<Upload size={12} strokeWidth={2.4} />}
+          aria-label={`Upload ${label} data`}
+        >
+          Upload
+        </Button>
+        <span className="hidden">{id}</span>
+      </div>
     </div>
   );
 }
