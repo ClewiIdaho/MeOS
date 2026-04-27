@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BottomNav } from '@/ui/components/BottomNav';
 import { AvatarBadge } from '@/ui/components/AvatarBadge';
+import { LevelUpOverlay } from '@/ui/components/LevelUpOverlay';
 
 interface ShellProps {
   children: ReactNode;
@@ -42,6 +43,8 @@ export function Shell({ children }: ShellProps) {
       </AnimatePresence>
 
       <BottomNav />
+
+      <LevelUpOverlay />
     </div>
   );
 }
