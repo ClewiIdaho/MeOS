@@ -1,6 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, MessageCircle, Plus, Search, Sparkles, Volume2, BookmarkPlus } from 'lucide-react';
+import {
+  BookOpen,
+  MessageCircle,
+  Plus,
+  Search,
+  Sparkles,
+  Volume2,
+  VolumeX,
+  BookmarkPlus,
+} from 'lucide-react';
 import { ScreenHeader } from '@/ui/components/ScreenHeader';
 import { Card } from '@/ui/components/Card';
 import { Button } from '@/ui/components/Button';
@@ -12,6 +21,7 @@ import { useNotebookEntries } from './queries';
 import { useUserSettings } from '@/hooks/useUserSettings';
 import { weekAnalyzer, recapToParams } from '@/voice/analyze';
 import { pickQuip } from '@/voice/select';
+import { speechSupported, speak, cancelSpeech } from '@/voice/speech';
 import type { NotebookEntry } from '@/db';
 import type { QuipCategory } from '@/voice/types';
 
@@ -45,18 +55,45 @@ export function CoachScreen() {
 
   const [voice, setVoice] = useState<VoiceState | undefined>(undefined);
   const [running, setRunning] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
 
   const intensity = settings?.voiceIntensity ?? 'standard';
   const name = settings?.name?.trim() || undefined;
+  const speakEnabled = settings?.soundEnabled ?? false;
+  const ttsAvailable = speechSupported();
+
+  useEffect(() => {
+    return () => {
+      cancelSpeech();
+    };
+  }, []);
+
+  const playVoice = (text: string) => {
+    if (!ttsAvailable) return;
+    setSpeaking(true);
+    speak(text, {
+      intensity,
+      onEnd: () => setSpeaking(false),
+    });
+  };
+
+  const stopVoice = () => {
+    cancelSpeech();
+    setSpeaking(false);
+  };
 
   const runVoice = async (category: QuipCategory) => {
     if (running) return;
     setRunning(true);
+    stopVoice();
     try {
       const recap = await weekAnalyzer();
       const params = recapToParams(name, recap);
       const result = await pickQuip(category, intensity, params);
       setVoice({ category, text: result.text, key: Date.now() });
+      if (speakEnabled && ttsAvailable) {
+        playVoice(result.text);
+      }
     } finally {
       setRunning(false);
     }
@@ -101,7 +138,11 @@ export function CoachScreen() {
           <VoiceCard
             running={running}
             voice={voice}
+            speaking={speaking}
+            ttsAvailable={ttsAvailable}
             onRun={runVoice}
+            onPlay={() => voice && playVoice(voice.text)}
+            onStop={stopVoice}
             onSave={saveVoiceToNotebook}
           />
         </motion.div>
@@ -187,11 +228,24 @@ const fadeUp = {
 interface VoiceCardProps {
   running: boolean;
   voice: VoiceState | undefined;
+  speaking: boolean;
+  ttsAvailable: boolean;
   onRun: (category: QuipCategory) => void;
+  onPlay: () => void;
+  onStop: () => void;
   onSave: () => void;
 }
 
-function VoiceCard({ running, voice, onRun, onSave }: VoiceCardProps) {
+function VoiceCard({
+  running,
+  voice,
+  speaking,
+  ttsAvailable,
+  onRun,
+  onPlay,
+  onStop,
+  onSave,
+}: VoiceCardProps) {
   return (
     <Card className="p-5">
       <div className="flex items-center justify-between">
@@ -219,12 +273,28 @@ function VoiceCard({ running, voice, onRun, onSave }: VoiceCardProps) {
         ))}
       </div>
 
-      <VoicePanel voice={voice} onSave={onSave} />
+      <VoicePanel
+        voice={voice}
+        speaking={speaking}
+        ttsAvailable={ttsAvailable}
+        onPlay={onPlay}
+        onStop={onStop}
+        onSave={onSave}
+      />
     </Card>
   );
 }
 
-function VoicePanel({ voice, onSave }: { voice: VoiceState | undefined; onSave: () => void }) {
+interface VoicePanelProps {
+  voice: VoiceState | undefined;
+  speaking: boolean;
+  ttsAvailable: boolean;
+  onPlay: () => void;
+  onStop: () => void;
+  onSave: () => void;
+}
+
+function VoicePanel({ voice, speaking, ttsAvailable, onPlay, onStop, onSave }: VoicePanelProps) {
   if (!voice) {
     return (
       <p className="mt-4 text-sm leading-relaxed text-text-secondary">
@@ -246,7 +316,24 @@ function VoicePanel({ voice, onSave }: { voice: VoiceState | undefined; onSave: 
       <p className="display-num text-base leading-relaxed text-text-primary">
         <TypingText key={voice.key} text={voice.text} charsPerSecond={32} />
       </p>
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end gap-2">
+        {ttsAvailable ? (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={speaking ? onStop : onPlay}
+            leadingIcon={
+              speaking ? (
+                <VolumeX size={14} strokeWidth={2} />
+              ) : (
+                <Volume2 size={14} strokeWidth={2} />
+              )
+            }
+            aria-label={speaking ? 'Stop speaking' : 'Speak the line aloud'}
+          >
+            {speaking ? 'Stop' : 'Hear it'}
+          </Button>
+        ) : null}
         <Button
           variant="ghost"
           size="sm"
