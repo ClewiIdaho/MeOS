@@ -23,6 +23,12 @@ export function useCelebrationFx(): void {
     );
 
     offs.push(
+      eventBus.on('level:up', (e) => {
+        burst('reserved', e.rankChanged ? { particleCount: 140, spread: 110 } : {});
+      }),
+    );
+
+    offs.push(
       eventBus.on('streak:updated', (e) => {
         if (e.isMilestone) burst('accent');
       }),
