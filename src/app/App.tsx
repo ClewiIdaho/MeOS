@@ -10,12 +10,16 @@ import { GoalsScreen } from '@/modules/goals/GoalsScreen';
 import { CoachScreen } from '@/modules/coach/CoachScreen';
 import { useDbReady } from '@/hooks/useDbReady';
 import { useActionOrchestrator } from '@/hooks/useActionOrchestrator';
+import { useGoalsEngine } from '@/hooks/useGoalsEngine';
+import { useCelebrationFx } from '@/hooks/useCelebrationFx';
 import { useUserSettings } from '@/hooks/useUserSettings';
 
 export function App() {
   const { ready, error } = useDbReady();
   const settings = useUserSettings();
   useActionOrchestrator();
+  useGoalsEngine();
+  useCelebrationFx();
 
   const showOnboarding = ready && settings && !settings.onboardingCompleted;
 
