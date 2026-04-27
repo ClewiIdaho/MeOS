@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input, Segmented } from '@/ui/components/Input';
 import { createCardioSession } from './queries';
@@ -58,7 +58,7 @@ export function CardioSheet({ open, onClose }: CardioSheetProps) {
   };
 
   return (
-    <Sheet open={open} onClose={onClose} title="Log cardio" description="Type, duration, and distance if you tracked it.">
+    <Modal open={open} onClose={onClose} title="Log cardio" description="Type, duration, and distance if you tracked it.">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
           <Input
@@ -130,6 +130,6 @@ export function CardioSheet({ open, onClose }: CardioSheetProps) {
           </Button>
         </div>
       </div>
-    </Sheet>
+    </Modal>
   );
 }

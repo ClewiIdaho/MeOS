@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Trash2, Plus } from 'lucide-react';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input } from '@/ui/components/Input';
 import { createExercise, deleteExercise, renameExercise, useExercises } from './queries';
@@ -63,7 +63,7 @@ export function ExerciseSheet({ open, onClose }: ExerciseSheetProps) {
   };
 
   return (
-    <Sheet open={open} onClose={onClose} title="Lift exercises" description="Build the library you actually train.">
+    <Modal open={open} onClose={onClose} title="Lift exercises" description="Build the library you actually train.">
       <div className="flex flex-col gap-4">
         <div className="flex items-end gap-2">
           <div className="flex-1">
@@ -172,6 +172,6 @@ export function ExerciseSheet({ open, onClose }: ExerciseSheetProps) {
           </Button>
         </div>
       </div>
-    </Sheet>
+    </Modal>
   );
 }

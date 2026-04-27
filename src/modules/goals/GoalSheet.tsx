@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Trash2, Plus, X } from 'lucide-react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input, Textarea, Segmented } from '@/ui/components/Input';
 import {
@@ -274,7 +274,7 @@ export function GoalSheet({ open, onClose, goal }: GoalSheetProps) {
     current.includes(id) ? current.filter((x) => x !== id) : [...current, id];
 
   return (
-    <Sheet
+    <Modal
       open={open}
       onClose={onClose}
       title={isEdit ? 'Edit goal' : 'New goal'}
@@ -283,7 +283,6 @@ export function GoalSheet({ open, onClose, goal }: GoalSheetProps) {
           ? 'Adjust target, deadline, tier, links.'
           : 'Pick a type and what you want to track. Difficulty sets the XP reward.'
       }
-      fullHeight
     >
       <div className="flex flex-col gap-4">
         <Input
@@ -469,7 +468,7 @@ export function GoalSheet({ open, onClose, goal }: GoalSheetProps) {
           </Button>
         </div>
       </div>
-    </Sheet>
+    </Modal>
   );
 }
 

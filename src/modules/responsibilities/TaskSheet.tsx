@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input, Textarea, Segmented } from '@/ui/components/Input';
 import { createTask, deleteTask, updateTask, useTaskCategories } from './queries';
@@ -70,7 +70,7 @@ export function TaskSheet({ open, onClose, task }: TaskSheetProps) {
   };
 
   return (
-    <Sheet
+    <Modal
       open={open}
       onClose={onClose}
       title={isEdit ? 'Edit task' : 'New task'}
@@ -158,7 +158,7 @@ export function TaskSheet({ open, onClose, task }: TaskSheetProps) {
           </Button>
         </div>
       </div>
-    </Sheet>
+    </Modal>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input } from '@/ui/components/Input';
 import { createMobilitySession } from './queries';
@@ -42,7 +42,7 @@ export function MobilitySheet({ open, onClose }: MobilitySheetProps) {
   };
 
   return (
-    <Sheet open={open} onClose={onClose} title="Log mobility" description="Stretching, foam rolling, yoga — it counts.">
+    <Modal open={open} onClose={onClose} title="Log mobility" description="Stretching, foam rolling, yoga — it counts.">
       <div className="flex flex-col gap-4">
         <Input
           label="Duration (minutes)"
@@ -96,6 +96,6 @@ export function MobilitySheet({ open, onClose }: MobilitySheetProps) {
           </Button>
         </div>
       </div>
-    </Sheet>
+    </Modal>
   );
 }
