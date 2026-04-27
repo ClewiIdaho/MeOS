@@ -14,7 +14,9 @@ import { useActionOrchestrator } from '@/hooks/useActionOrchestrator';
 import { useGoalsEngine } from '@/hooks/useGoalsEngine';
 import { useCelebrationFx } from '@/hooks/useCelebrationFx';
 import { useNotificationScheduler } from '@/hooks/useNotificationScheduler';
+import { useHaptics } from '@/hooks/useHaptics';
 import { useUserSettings } from '@/hooks/useUserSettings';
+import { IosInstallHint } from '@/ui/components/IosInstallHint';
 
 export function App() {
   const { ready, error } = useDbReady();
@@ -22,6 +24,7 @@ export function App() {
   useActionOrchestrator();
   useGoalsEngine();
   useCelebrationFx();
+  useHaptics();
   useNotificationScheduler();
 
   const showOnboarding = ready && settings && !settings.onboardingCompleted;
@@ -50,6 +53,8 @@ export function App() {
       <AnimatePresence>
         {showOnboarding ? <Onboarding key="onboarding" onComplete={() => undefined} /> : null}
       </AnimatePresence>
+
+      {ready && !showOnboarding ? <IosInstallHint /> : null}
     </>
   );
 }

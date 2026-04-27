@@ -2,7 +2,7 @@
 
 A personal life-OS Progressive Web App. Money, tasks, workouts, goals, leveling, and a coach with personality — all running offline, on your phone, across one connected app.
 
-> **Status:** under construction. Phase 1 (shell + PWA install path) is complete. Modules land in subsequent phases.
+> **Status:** feature-complete through Phase 14. All fourteen phases shipped: shell, schema, engines, voice, onboarding, money, tasks, workouts, goals, level-up overlay, coach, notifications, settings/backup/voice-studio, polish.
 
 ---
 
@@ -98,17 +98,17 @@ No backend. No telemetry. No cloud sync. All data lives in your browser's Indexe
 - [x] **Phase 1** — Scaffold, design tokens, PWA install path, layout shell, routing, GitHub Pages CI/CD
 - [x] **Phase 2** — Dexie schema + seed data
 - [x] **Phase 3** — Event bus + XP engine + streak engine + action orchestrator
-- [ ] Phase 4 — Voice engine + 500+ quips
+- [x] **Phase 4** — Voice engine: catalog, picker, week analyzer
 - [x] **Phase 5** — Onboarding flow (welcome → name → tone → daily XP target → ready)
 - [x] **Phase 6** — Money module (bills with monthly status, income, cash adjustments, summary)
 - [x] **Phase 7** — Responsibilities module (daily/weekly/one-off, categories, streak card)
-- [ ] Phase 8 — Workouts module
-- [ ] Phase 9 — Goals module (cross-module integration)
-- [ ] Phase 10 — Level system polish (level-up sequence)
-- [ ] Phase 11 — Coach module
-- [ ] Phase 12 — Notifications scheduler
-- [ ] Phase 13 — Settings + Backup/Restore + Voice Studio
-- [ ] Phase 14 — Polish pass
+- [x] **Phase 8** — Workouts module (lift with auto-PR, cardio, mobility, rest, weekly volume chart)
+- [x] **Phase 9** — Goals module (cross-module integration via goalsEngine, milestones, pace math)
+- [x] **Phase 10** — Level-up overlay (reserved-gold takeover, queued, reduced-motion aware)
+- [x] **Phase 11** — Coach module (Voice buttons + Notebook with tag search)
+- [x] **Phase 12** — Notifications scheduler (local-only, 60s reconcile loop)
+- [x] **Phase 13** — Settings + Backup/Restore + Voice Studio
+- [x] **Phase 14** — Polish (haptics, iOS install hint, reduced-motion audit on confetti)
 
 ---
 
