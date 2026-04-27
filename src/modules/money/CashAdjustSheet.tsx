@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input, Segmented } from '@/ui/components/Input';
 import { createCashAdjustment } from './queries';
@@ -46,7 +46,7 @@ export function CashAdjustSheet({ open, onClose }: CashAdjustSheetProps) {
   };
 
   return (
-    <Sheet open={open} onClose={onClose} title="Cash adjustment" description="Track ad-hoc money in or out.">
+    <Modal open={open} onClose={onClose} title="Cash adjustment" description="Track ad-hoc money in or out.">
       <div className="flex flex-col gap-4">
         <Segmented<Direction>
           label="Direction"
@@ -87,6 +87,6 @@ export function CashAdjustSheet({ open, onClose }: CashAdjustSheetProps) {
           </Button>
         </div>
       </div>
-    </Sheet>
+    </Modal>
   );
 }

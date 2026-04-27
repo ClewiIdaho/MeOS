@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input, Textarea } from '@/ui/components/Input';
 import { createBill, deleteBill, updateBill } from './queries';
@@ -80,7 +80,7 @@ export function BillSheet({ open, onClose, bill }: BillSheetProps) {
   };
 
   return (
-    <Sheet
+    <Modal
       open={open}
       onClose={onClose}
       title={isEdit ? 'Edit bill' : 'New bill'}
@@ -157,6 +157,6 @@ export function BillSheet({ open, onClose, bill }: BillSheetProps) {
           </Button>
         </div>
       </div>
-    </Sheet>
+    </Modal>
   );
 }

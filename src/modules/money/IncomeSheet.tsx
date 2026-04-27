@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import { Sheet } from '@/ui/components/Sheet';
+import { Modal } from '@/ui/components/Modal';
 import { Button } from '@/ui/components/Button';
 import { Input, Segmented } from '@/ui/components/Input';
 import { createIncome, deleteIncome } from './queries';
@@ -65,7 +65,7 @@ export function IncomeSheet({ open, onClose, income }: IncomeSheetProps) {
 
   if (isView && income) {
     return (
-      <Sheet open={open} onClose={onClose} title={income.label} description="Income source">
+      <Modal open={open} onClose={onClose} title={income.label} description="Income source">
         <div className="flex flex-col gap-3 text-sm text-text-secondary">
           <Row label="Cadence" value={income.cadence} />
           <Row label="Amount" value={`$${(income.amount / 100).toFixed(2)}`} />
@@ -82,12 +82,12 @@ export function IncomeSheet({ open, onClose, income }: IncomeSheetProps) {
             </Button>
           </div>
         </div>
-      </Sheet>
+      </Modal>
     );
   }
 
   return (
-    <Sheet open={open} onClose={onClose} title="New income" description="One-time or recurring.">
+    <Modal open={open} onClose={onClose} title="New income" description="One-time or recurring.">
       <div className="flex flex-col gap-4">
         <Input
           label="Source"
@@ -134,7 +134,7 @@ export function IncomeSheet({ open, onClose, income }: IncomeSheetProps) {
           </Button>
         </div>
       </div>
-    </Sheet>
+    </Modal>
   );
 }
 
