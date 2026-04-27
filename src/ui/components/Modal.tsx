@@ -87,7 +87,7 @@ export function Modal({ open, onClose, title, description, children }: ModalProp
                 </div>
               )}
 
-              <div className="flex-1 overflow-y-auto px-5 pb-5 pt-3">{children}</div>
+              <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-5 pt-3">{children}</div>
             </motion.div>
           </div>
         </div>
