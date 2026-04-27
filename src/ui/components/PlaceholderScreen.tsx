@@ -4,6 +4,8 @@ import { type LucideIcon } from 'lucide-react';
 import { ScreenHeader } from './ScreenHeader';
 import { Card } from './Card';
 import { DbStatsCard } from './DbStatsCard';
+import { LevelPulseCard } from './LevelPulseCard';
+import { DevTestPanel } from './DevTestPanel';
 
 interface PlaceholderScreenProps {
   eyebrow: string;
@@ -115,6 +117,8 @@ export function PlaceholderScreen({
           </motion.div>
         ) : null}
 
+        <LevelPulseCard />
+        <DevTestPanel />
         <DbStatsCard />
       </motion.div>
     </>
