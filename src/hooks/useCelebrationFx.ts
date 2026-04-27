@@ -50,6 +50,7 @@ function burst(
   palette: 'accent' | 'reserved',
   overrides: confetti.Options = {},
 ): void {
+  if (prefersReducedMotion()) return;
   const colors =
     palette === 'reserved'
       ? ['#FFD27F', '#F59E0B', '#FFB547', '#F4F1FF']
@@ -62,4 +63,9 @@ function burst(
     ticks: 220,
   };
   confetti({ ...base, ...overrides });
+}
+
+function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 }
