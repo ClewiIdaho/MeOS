@@ -256,7 +256,9 @@ async function maybeFireStreakWarning(settings: UserSettings): Promise<void> {
 function fireSystemNotification(title: string, body: string): void {
   if (!notificationsAvailable() || Notification.permission !== 'granted') return;
   try {
-    new Notification(title, { body, icon: '/icons/icon-192.png' });
+    const base = import.meta.env.BASE_URL || '/';
+    const icon = `${base.replace(/\/$/, '')}/icons/icon-192.png`;
+    new Notification(title, { body, icon });
   } catch {
     // Some browsers throw when constructing Notification outside of a
     // user gesture. We've already gated on permission; swallow and
